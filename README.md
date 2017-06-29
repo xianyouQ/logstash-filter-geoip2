@@ -1,24 +1,28 @@
 # Alter comment
 
 这个是跟据官方geoip filter修改，官方版本默认只能读取一个geolite database，默认是读取city database ，只能根据ip读取到ip的地域；这个修改后可以支持多个(当然每种类型只能唯一一个)，主要是希望能同时支持地域和isp.
-修改后配置项跟官方有点不同：
+修改后配置项跟官方有点不同
+```
     geoip2{    ##filter 名是geoip2,区别官方geoip
         source => "ip"
         #fields => ["city_name", "country_code2", "country_name", "latitude", "longitude", "region_name"] ##可选项包括ip,country_code2,country_code3,country_name,continent_code,region_code，region_name，city_name，postal_code,latitude,longitude,dma_code, area_code,timezone,real_region_name，number,asn,isp
         databases => ["vendor/geoip/GeoLiteCity.dat"]  ## 官方配置叫database ,属性不是列表
       }
-
+```
 ## Deployment
  
 第一步，首先把这个插件文件夹拷贝到下面的目录中
-    cp -R logstash-filter-geoip2 /usr/local/logstash/vendor/bundle/jruby/1.9/gems/logstash-filter-geoip2-1.0.0
-    
-第二步，修改logstash根目录下的Gemfile,添加如下的内容：
+```
+    cp -R logstash-filter-geoip2 /path/to/logstash/vendor/bundle/jruby/1.9/gems/logstash-filter-geoip2-1.0.0
+```
+第二步，修改logstash根目录下的Gemfile,添加如下的内容
+```
     gem "logstash-filter-geoip2", :path => "vendor/bundle/jruby/1.9/gems/logstash-filter-geoip2-1.0.0"
-    
+```
 第三步，如果databases 属性没有配置，默认会读取
-    /usr/local/logstash/vendor/bundle/jruby/1.9/gems/logstash-filter-geoip2-1.0.0/vendor/GeoLiteCity*.dat
-    
+```
+    /path/to/logstash/vendor/bundle/jruby/1.9/gems/logstash-filter-geoip2-1.0.0/vendor/GeoLiteCity*.dat
+```
 匹配到的第一个dat文件，而这个文件夹和文件都需要自己创建。
     
 # Logstash Plugin
